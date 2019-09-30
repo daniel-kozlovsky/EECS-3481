@@ -145,9 +145,27 @@ public class CryptoTools
 	 **/
 	public static double getIC(byte[] ar)
 	{
-		int ic = 0;
-		// Explained in class
-		return ic;
+		
+		int trials = 10000;
+		int count = 0;
+		
+		for(int i=1; i <=trials; i++)
+		{
+			int pos1 = (int) (ar.length * Math.random());
+			int pos2;
+			do
+			{
+				pos2 = (int) (ar.length * Math.random());
+			}while(pos1 == pos2);
+			
+			if (ar[pos1] == ar[pos2])
+			{
+				count++;
+			}
+		}
+		
+		
+		return  count / (double) trials;
 	}
 
 }
