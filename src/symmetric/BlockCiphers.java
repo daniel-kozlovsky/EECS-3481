@@ -1,7 +1,5 @@
 package symmetric;
 
-import java.io.File;
-import java.io.FileReader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.Key;
@@ -19,7 +17,8 @@ public class BlockCiphers {
 	{
 		question1();
 		question2();
-		question3();
+		question3();//only last block is salvageable
+		question4();
 		question5();
 		finalQ();
 	}
@@ -83,19 +82,40 @@ public class BlockCiphers {
 	
 	public static void question4() throws Exception
 	{
-		//Q3
+		//Q4
 		final byte[] CIPHER_TEXT = CryptoTools.hexToBytes("437DBAB5607137A5CFC1031114634087");
-		byte[] key = new String("CSE@YORK").getBytes();
-		byte[] iv = CryptoTools.hexToBytes("0123456701234567");
+		byte[] key = CryptoTools.hexToBytes("6B79466F724D4F50");
+		byte[] iv = CryptoTools.hexToBytes("6976466F724D4F50");
 		
-		AlgorithmParameterSpec ivAps = new IvParameterSpec(iv);
+		byte[] ivComplement = new byte[iv.length];
+		for(int i =0; i < iv.length; i++)
+		{
+			ivComplement[i] = (byte) ~ iv[i];
+		}
+		
+		AlgorithmParameterSpec ivAps = new IvParameterSpec(ivComplement);
 		Key secretKey = new SecretKeySpec(key, "DES");
-		Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
+		Cipher cipher = Cipher.getInstance("DES/CBC/NoPadding");
 		
 		cipher.init(Cipher.DECRYPT_MODE, secretKey, ivAps);
-		byte[] decryptedText = cipher.doFinal(CIPHER_TEXT);
 		
-		System.out.println(">" + new String(decryptedText)+ "<");
+		
+		byte[] decryptedText  = new byte[CIPHER_TEXT.length/2];
+		cipher.update(CIPHER_TEXT, 0, 8, decryptedText);
+		
+		//~ previous cipher text block
+		byte[] ivComplement2 = new byte[decryptedText.length];
+		for(int i = 0; i < CIPHER_TEXT.length/2; i++)
+		{
+			ivComplement2[i] = (byte) ~ CIPHER_TEXT[i];
+		}
+		
+		byte[] decryptedText2  = new byte[decryptedText.length];
+		AlgorithmParameterSpec ivAps2 = new IvParameterSpec(ivComplement2);
+		cipher.init(Cipher.DECRYPT_MODE, secretKey, ivAps2);
+		cipher.update(CIPHER_TEXT, 8,8, decryptedText2);
+		
+		System.out.println("4>" + new String(decryptedText) + new String(decryptedText2)+ "<");
 		
 		
 	}

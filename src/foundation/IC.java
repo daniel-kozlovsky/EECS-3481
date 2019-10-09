@@ -20,7 +20,7 @@ public class IC
 				pos2 = (int) (pt.length * Math.random());
 			} while (pos2 == pos1);
 			if (pt[pos1] == pt[pos2]) count++;
-			System.out.println(count / (double) i);
+			//System.out.println(count / (double) i);
 		}
 		System.out.println(count / (double) trials);
 		
