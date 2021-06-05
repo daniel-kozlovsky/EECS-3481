@@ -112,7 +112,7 @@ public class ActivityE {
 	public static void q5()
 	{
 		BigInteger b = new BigInteger("2");
-		BigInteger x = new BigInteger("10");
+		BigInteger x = new BigInteger("20");
 		BigInteger n = new BigInteger("11");
 		
 		System.out.println(discreteLog(b, x, n).toString());
@@ -122,7 +122,7 @@ public class ActivityE {
 	{
 		BigInteger bI =  BigInteger.ONE;
 		
-		for(BigInteger k = BigInteger.ZERO; k.compareTo(BigInteger.valueOf(Integer.MAX_VALUE)) <= 0; k = k.add(BigInteger.ONE))
+		for(BigInteger k = BigInteger.ZERO; k.compareTo(BigInteger.valueOf(1000000l)) <= 0; k = k.add(BigInteger.ONE))
 		{
 			bI = b.modPow(k, n);
 			
